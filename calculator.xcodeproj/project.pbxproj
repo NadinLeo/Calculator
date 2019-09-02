@@ -12,6 +12,9 @@
 		FD05B12C23114C06006CE3F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD05B12A23114C06006CE3F9 /* Main.storyboard */; };
 		FD05B12E23114C09006CE3F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD05B12D23114C09006CE3F9 /* Assets.xcassets */; };
 		FD05B13123114C09006CE3F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD05B12F23114C09006CE3F9 /* LaunchScreen.storyboard */; };
+		FD05B13A231A6749006CE3F9 /* BrainModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD05B139231A6749006CE3F9 /* BrainModel.swift */; };
+		FD05B140231A8BB2006CE3F9 /* Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD05B13F231A8BB2006CE3F9 /* Display.swift */; };
+		FD05B143231A94DF006CE3F9 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD05B142231A94DF006CE3F9 /* UIColor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +25,9 @@
 		FD05B12D23114C09006CE3F9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FD05B13023114C09006CE3F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FD05B13223114C09006CE3F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FD05B139231A6749006CE3F9 /* BrainModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrainModel.swift; sourceTree = "<group>"; };
+		FD05B13F231A8BB2006CE3F9 /* Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Display.swift; sourceTree = "<group>"; };
+		FD05B142231A94DF006CE3F9 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +44,8 @@
 		FD05B11A23114C05006CE3F9 = {
 			isa = PBXGroup;
 			children = (
+				FD05B141231A94B1006CE3F9 /* Common */,
+				FD05B13B231A678E006CE3F9 /* SupportingFiles */,
 				FD05B12523114C06006CE3F9 /* calculator */,
 				FD05B12423114C06006CE3F9 /* Products */,
 			);
@@ -54,14 +62,63 @@
 		FD05B12523114C06006CE3F9 /* calculator */ = {
 			isa = PBXGroup;
 			children = (
+				FD05B13C231A67A8006CE3F9 /* Controllers */,
+				FD05B13D231A67CB006CE3F9 /* Views */,
+				FD05B13E231A67E2006CE3F9 /* Models */,
+			);
+			path = calculator;
+			sourceTree = "<group>";
+		};
+		FD05B13B231A678E006CE3F9 /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
 				FD05B12623114C06006CE3F9 /* AppDelegate.swift */,
-				FD05B12823114C06006CE3F9 /* ViewController.swift */,
-				FD05B12A23114C06006CE3F9 /* Main.storyboard */,
 				FD05B12D23114C09006CE3F9 /* Assets.xcassets */,
 				FD05B12F23114C09006CE3F9 /* LaunchScreen.storyboard */,
 				FD05B13223114C09006CE3F9 /* Info.plist */,
 			);
-			path = calculator;
+			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		FD05B13C231A67A8006CE3F9 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				FD05B12823114C06006CE3F9 /* ViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		FD05B13D231A67CB006CE3F9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FD05B12A23114C06006CE3F9 /* Main.storyboard */,
+				FD05B13F231A8BB2006CE3F9 /* Display.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FD05B13E231A67E2006CE3F9 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FD05B139231A6749006CE3F9 /* BrainModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		FD05B141231A94B1006CE3F9 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				FD05B144231A94EF006CE3F9 /* Extensions */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		FD05B144231A94EF006CE3F9 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				FD05B142231A94DF006CE3F9 /* UIColor.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -135,8 +192,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD05B13A231A6749006CE3F9 /* BrainModel.swift in Sources */,
 				FD05B12923114C06006CE3F9 /* ViewController.swift in Sources */,
+				FD05B140231A8BB2006CE3F9 /* Display.swift in Sources */,
 				FD05B12723114C06006CE3F9 /* AppDelegate.swift in Sources */,
+				FD05B143231A94DF006CE3F9 /* UIColor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,7 +344,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 43W32NS74J;
-				INFOPLIST_FILE = calculator/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/SupportingFiles/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -302,7 +362,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 43W32NS74J;
-				INFOPLIST_FILE = calculator/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/SupportingFiles/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

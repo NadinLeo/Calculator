@@ -9,28 +9,39 @@
 import Foundation
 
 class BrainModel {
-    
-    private var accumulator: Double?
-    private var savedValue: Double?
-    
-    var displayingValue: Double { return savedValue ?? accumulator ?? 0}
-    
-    var currentOperation: ((Double, Double) -> Double)?
-    
-    enum Operation {
-        
+    private enum Operation {
         case constant(Double)
-        case unaryOperation((Double) -> Double)
-        case changeSign((Double) -> Double)
-        case binaryOperation((Double, Double) -> Double)
-        case resultOperation(((Double, Double) -> Double, Double, Double) -> Double)
+        case unaryOperation((Double) -> Double?)
+        case binaryOperation((Double, Double) -> Double?)
     }
     
-    let dict: Dictionary<String, Operation> = [
+    private let functionPriority = [ "−": 0,
+                                     "+": 0,
+                                     "÷": 1,
+                                     "×": 1,
+                                     "√": 2,
+                                     "±": 2 ]
+    
+    private var operands: Array<Double>  = []
+    
+    private var functions: Array<String> = []
+    
+    var displayingValue: Double { return operands.last ?? 0 }
+    
+    var isCalculatingMode: Bool { return operands.count > 0 }
+    
+    private let dict: Dictionary<String, Operation> = [
         
         "∏": .constant(Double.pi),
-        "√": .unaryOperation(sqrt),
-        "±": .changeSign({ number in
+        "√": .unaryOperation({number in
+            guard number >= 0 else {
+               // self.clean()
+                return 0
+            }
+            return sqrt(number)
+            
+        }),
+        "±": .unaryOperation({ number in
             return number * (-1)
         }),
         "÷": .binaryOperation({(first, second) in
@@ -47,69 +58,95 @@ class BrainModel {
         }),
         "+": .binaryOperation({first, second in
             return first + second
-        }),
-        "=": .resultOperation({action, first, second in
-            return action(first, second)
         })
     ]
     
     func setOperand(_ operand: Double) {
-        accumulator = operand
+        operands.append(operand)
+    }
+    
+    func setFunction(_ function: String) {
+        functions.append(function)
+        
+        while let currentOperation = getCurrentOperation() {
+            performOperation(currentOperation)
+        }
+    }
+    
+    private func getCurrentOperation() -> String? {
+        guard let lastFunction = functions.last else {
+            return nil
+        }
+        
+        let priorityLastFunction = functionPriority[lastFunction]
+        
+        if (priorityLastFunction == 2) {
+            functions.removeLast()
+            return lastFunction
+        }
+        
+        
+        guard functions.count >= 2 else {
+            return nil
+        }
+        
+        let previousFunction = functions[functions.count - 2]
+        let priorityPreviousFunction = functionPriority[previousFunction]
+        
+        if  let priorityPreviousFunction = priorityPreviousFunction,
+            let priorityLastFunction = priorityLastFunction,
+            (priorityPreviousFunction >= priorityLastFunction) {
+            
+                functions.remove(at: functions.count - 2)
+                return previousFunction
+            
+        }
+        
+        return nil
     }
     
     func clean() {
-        accumulator = nil
-        savedValue = nil
-        currentOperation = nil
+        operands.removeAll()
+        functions.removeAll()
     }
     
-    func performOperation (_ symbol: String) {
+    private func performOperation (_ symbol: String) {
         
         if let operation = dict[symbol] {
             
             switch operation {
                 
             case .constant(let constant):
-                
-                accumulator = constant
+                operands.append(constant)
                 
             case .unaryOperation(let operation):
+                if operands.isEmpty {
+                    return
+                }
+                let lastOperand = operands.removeLast()
                 
-//                guard (displayValue > 0) else {
-//                    display.text = "Not a number"
-//                    isUserTypping = false
-//                    return
-//                }
+                if let resultOperand = operation(lastOperand) {
+                    operands.append(resultOperand)
+                    return;
+                }
                 
-                accumulator = operation(accumulator!)
-                
-            case .changeSign(let operation):
-                accumulator = operation(accumulator!)
+               clean()
                 
             case .binaryOperation(let operation):
-                guard let accumulator = accumulator else {
+                if operands.count < 2 {
+                    clean()
                     return
                 }
                 
-                if let currentOperation = currentOperation,
-                    let savedValue = savedValue {
-                    self.accumulator = currentOperation(savedValue, accumulator)
-                }
+                let firstOperand = operands.remove(at: operands.count - 2)
+                let secondOperand = operands.remove(at: operands.count - 1)
                 
-                currentOperation = operation
-                savedValue = accumulator
-                self.accumulator = nil
-            case .resultOperation(let operation):
-                guard let currentOperation = currentOperation,
-                      let savedValue = savedValue,
-                      let accumulator = accumulator
-                    else {
+                if let resultOperand = operation(firstOperand, secondOperand) {
+                    operands.append(resultOperand)
                     return
                 }
                 
-                self.accumulator = operation(currentOperation, savedValue, accumulator)
-                self.savedValue = nil
-                self.currentOperation = nil
+                clean()
             }
         }
     }

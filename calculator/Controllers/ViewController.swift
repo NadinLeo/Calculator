@@ -66,7 +66,7 @@ class ViewController: UIViewController {
         }
         
         set {
-            if(Int(newValue * 100_000_000_000) - Int(newValue) * 100_000_000_000 > 0) {
+            if Int(newValue * 100_000_000_000) - Int(newValue) * 100_000_000_000 > 0 {
                 display.text = String(newValue)
             }
             else {
@@ -76,6 +76,7 @@ class ViewController: UIViewController {
     }
     
     var isUserTypping = false
+    var currentFunction = ""
     
     @IBAction func digPressed(_ sender: UIButton) {
         
@@ -91,8 +92,6 @@ class ViewController: UIViewController {
             display.text = textOnButton
             isUserTypping = !isUserTypping
         }
-        
-        model.setOperand(displayValue)
     }
     
     @IBAction func clear(_ sender: Any) {
@@ -107,7 +106,8 @@ class ViewController: UIViewController {
         guard let symbol = sender.currentTitle else {
                 return
         }
-        model.performOperation(symbol)
+        model.setOperand(displayValue)
+        model.setFunction(symbol)
         displayValue = model.displayingValue
         isUserTypping = false
     }

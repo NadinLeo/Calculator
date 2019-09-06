@@ -66,7 +66,7 @@ class ViewController: UIViewController {
         }
         
         set {
-            if Int(newValue * 100_000_000_000) - Int(newValue) * 100_000_000_000 > 0 {
+            if Int(newValue * 100_000_000_000) - Int(newValue) * 100_000_000_000 != 0 {
                 display.text = String(newValue)
             }
             else {
@@ -106,7 +106,11 @@ class ViewController: UIViewController {
         guard let symbol = sender.currentTitle else {
                 return
         }
-        model.setOperand(displayValue)
+        
+        if (isUserTypping) {
+            model.setOperand(displayValue)
+        }
+        
         model.setFunction(symbol)
         displayValue = model.displayingValue
         isUserTypping = false

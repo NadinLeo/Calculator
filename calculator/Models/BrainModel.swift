@@ -13,6 +13,7 @@ class BrainModel {
         case constant(Double)
         case unaryOperation((Double) -> Double?)
         case binaryOperation((Double, Double) -> Double?)
+        case resultOperation
     }
     
     private let functionPriority = [ "−": 0,
@@ -20,7 +21,9 @@ class BrainModel {
                                      "÷": 1,
                                      "×": 1,
                                      "√": 2,
-                                     "±": 2 ]
+                                     "±": 2,
+                                     "=": 2,
+                                     "∏": 2]
     
     private var operands: Array<Double>  = []
     
@@ -42,7 +45,7 @@ class BrainModel {
             
         }),
         "±": .unaryOperation({ number in
-            return number * (-1)
+            return number * Double(-1)
         }),
         "÷": .binaryOperation({(first, second) in
             guard (second != 0) else {
@@ -58,7 +61,8 @@ class BrainModel {
         }),
         "+": .binaryOperation({first, second in
             return first + second
-        })
+        }),
+        "=": .resultOperation
     ]
     
     func setOperand(_ operand: Double) {
@@ -85,7 +89,9 @@ class BrainModel {
             return lastFunction
         }
         
-        
+        if functions.count > operands.count {
+            functions.remove(at: functions.count - 2)
+        }
         guard functions.count >= 2 else {
             return nil
         }
@@ -109,6 +115,8 @@ class BrainModel {
         operands.removeAll()
         functions.removeAll()
     }
+    
+    
     
     private func performOperation (_ symbol: String) {
         
@@ -134,7 +142,6 @@ class BrainModel {
                 
             case .binaryOperation(let operation):
                 if operands.count < 2 {
-                    clean()
                     return
                 }
                 
@@ -147,6 +154,12 @@ class BrainModel {
                 }
                 
                 clean()
+                
+            case .resultOperation:
+                for operation in functions.reversed() {
+                    performOperation(operation)
+                }
+                functions.removeAll()
             }
         }
     }
